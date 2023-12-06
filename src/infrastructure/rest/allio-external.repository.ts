@@ -104,7 +104,7 @@ export default class AllioExternalRepository {
     const stock = new StockModel();
     Object.keys(data).forEach((key) => {
       const keyName = key.split('. ')[1];
-      stock[keyName] = data;
+      stock[keyName] = data[key];
     });
 
     return stock;

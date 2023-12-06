@@ -19,7 +19,7 @@ export class StockResolver {
    *
    * @param keyword The given keyword
    */
-  @Query((returns) => StockPriceModel)
+  @Query((returns) => [StockModel])
   async search(@Args('keyword') keyword: string): Promise<StockModel[]> {
     return await this.searchStocksUsecase.invoke(keyword);
   }

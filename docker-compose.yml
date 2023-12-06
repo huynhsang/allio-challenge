@@ -10,3 +10,25 @@ services:
             - ../../db-data/postgresql:/data/postgres
         env_file:
             - docker.env
+        networks:
+            - allio-challenge
+
+    api:
+        build:
+            dockerfile: Dockerfile
+            context: .
+            target: development
+        volumes:
+            - .:/usr/src/app
+        env_file:
+            - .env
+        command: npm start
+        ports:
+            - 3000:3000
+        depends_on:
+            - postgres
+        networks:
+            - allio-challenge
+
+networks:
+    allio-challenge:

@@ -5,17 +5,17 @@ import { Field, ObjectType } from '@nestjs/graphql';
  */
 @ObjectType()
 export default class PriceModel {
-  @Field()
-  open: string;
+  @Field({ nullable: true })
+  open?: string;
 
-  @Field()
-  high: string;
+  @Field({ nullable: true })
+  high?: string;
 
-  @Field()
-  low: string;
+  @Field({ nullable: true })
+  low?: string;
 
-  @Field()
-  close: string;
+  @Field({ nullable: true })
+  close?: string;
 
   @Field({ nullable: true })
   adjustedClose?: string;

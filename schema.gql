@@ -3,10 +3,10 @@
 # ------------------------------------------------------
 
 type PriceModel {
-  open: String!
-  high: String!
-  low: String!
-  close: String!
+  open: String
+  high: String
+  low: String
+  close: String
   adjustedClose: String
   volume: String
   price: String
@@ -25,13 +25,24 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 scalar DateTime
 
 type StockPriceModel {
-  symbol: String!
+  symbol: String
   information: String
   lastRefreshed: DateTime
   interval: String
   outputSize: String
   timezone: String
-  prices: [PriceModel!]!
+  prices: [PriceModel!]
+}
+
+type StockModel {
+  symbol: String
+  name: String
+  type: String
+  region: String
+  marketOpen: String
+  marketClose: String
+  timezone: String
+  currency: String
 }
 
 type UserModel {
@@ -47,7 +58,7 @@ type StockPreferenceModel {
 }
 
 type Query {
-  search(keyword: String!): StockPriceModel!
+  search(keyword: String!): [StockModel!]!
   stockPrices(function: String!, symbol: String!, interval: String, outputSize: String, adjusted: Boolean, extended_hours: Boolean, month: String): StockPriceModel!
 }
 

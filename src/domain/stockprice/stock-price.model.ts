@@ -6,8 +6,8 @@ import PriceModel from './price.model';
  */
 @ObjectType()
 export default class StockPriceModel {
-  @Field()
-  symbol: string;
+  @Field({ nullable: true })
+  symbol?: string;
 
   @Field({ nullable: true })
   information?: string;
@@ -24,6 +24,6 @@ export default class StockPriceModel {
   @Field({ nullable: true })
   timezone: string;
 
-  @Field(type => [PriceModel])
+  @Field(type => [PriceModel], { nullable: true })
   prices: PriceModel[];
 }

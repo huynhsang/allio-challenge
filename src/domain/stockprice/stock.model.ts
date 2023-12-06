@@ -5,7 +5,7 @@ import { Field, ObjectType } from '@nestjs/graphql';
  */
 @ObjectType()
 export default class StockModel {
-  @Field()
+  @Field({ nullable: true })
   symbol: string;
 
   @Field({ nullable: true })

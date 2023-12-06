@@ -6,5 +6,8 @@ COPY package*.json ./
 
 RUN npm ci
 
+RUN npx mikro-orm migration:up
+
 COPY . .
 
+CMD [ "npm", "start" ]

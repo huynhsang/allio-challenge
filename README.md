@@ -1,26 +1,36 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
+## Check list
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+- [x] Document the local deployment workflow
+- [x] Utilizes Time Series Stock Data APIs
+  (https://www.alphavantage.co/documentation/#time-series-data)
+- [x] Implement a GraphQL resolver to query stock price data
+- [x] The query should be able to fetch historical market data based on tickers and all
+supported parameters in the API document
+- [x] (Optional) Implement a GraphQL resolver to mutate and store some information
+about the user’s stock preferences or portfolio in a database
+- [x] (Optional) Can use whichever database, SQL, NoSQL, or any other kinds of
+database to store user’s portfolio (choices of tickers), recommend using
+Mikro-ORM for interacting with the database
+- [x] Use Typescript
+- [x] Environment should be reproducible on any machine
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Project Architecture
+I applies The Clean Architecture (https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
+.
+* [db-data](./db-data)
+* [src](./src)
+    * [api](./src/api)
+    * [auth](./src/auth)
+    * [common](./src/common)
+    * [configuration](./src/configuration)
+    * [domain](./src/domain)
+    * [infrastructure](./src/infrastructure)
+    * [migrations](./src/migrations)
+    * [usecases](./src/usecases)
+* [test](./test)
+* [Dockerfile](./Dockerfile)
+* [docker-compose.yml](./docker-compose.yml)
+* [README.md](./README.md)
 
 ## Description
 
@@ -40,33 +50,161 @@ $ npm run start
 
 # watch mode
 $ npm run start:dev
-
-# production mode
-$ npm run start:prod
 ```
 
-## Test
+## Functionalities
 
-```bash
-# unit tests
-$ npm run test
+1. Query stock price data
+````
+The request:
+query {
+  stockPrices(function: "TIME_SERIES_DAILY", symbol:"IBM") {
+    symbol
+    timezone
+    prices {
+      dateTime
+      open
+    }
+  }
+}
 
-# e2e tests
-$ npm run test:e2e
+The response:
+{
+  "data": {
+    "stockPrices": {
+      "symbol": "IBM",
+      "timezone": "US/Eastern",
+      "prices": [
+        {
+          "dateTime": "2023-12-05T00:00:00.000Z",
+          "open": "160.7600"
+        },
+        {
+          "dateTime": "2023-12-04T00:00:00.000Z",
+          "open": "160.2900"
+        },
+        {
+          "dateTime": "2023-12-01T00:00:00.000Z",
+          "open": "158.4100"
+        },
+        {
+          "dateTime": "2023-11-30T00:00:00.000Z",
+          "open": "156.9500"
+        },
+        {
+          "dateTime": "2023-11-29T00:00:00.000Z",
+          "open": "156.1500"
+        },
+        {
+          "dateTime": "2023-11-28T00:00:00.000Z",
+          "open": "155.4400"
+        },
+        {
+          "dateTime": "2023-11-27T00:00:00.000Z",
+          "open": "154.9900"
+        },
+      ]
+    }
+  }
+}
+````
+2. Search stocks by keyword
+````
+The request:
+query {
+  search(keyword: "IBM") {
+    symbol
+    name
+    type
+    region
+    timezone
+    currency
+  }
+}
 
-# test coverage
-$ npm run test:cov
-```
+The response:
+{
+  "data": {
+    "search": [
+      {
+        "symbol": "IBM",
+        "name": "International Business Machines Corp",
+        "type": "Equity",
+        "region": "United States",
+        "timezone": "UTC-04",
+        "currency": "USD"
+      },
+      {
+        "symbol": "IBML",
+        "name": "iShares iBonds Dec 2023 Term Muni Bond ETF",
+        "type": "ETF",
+        "region": "United States",
+        "timezone": "UTC-04",
+        "currency": "USD"
+      },
+    },
+  },  
+}  
+````
+3. Create a user
+````
+The Request:
+mutation {
+  signup(
+    user: {
+      username: "abcd",
+      password: "abcd",
+    },
+  ) {
+    id,
+    username,
+    password,
+  }
+}
 
-## Support
+The Response:
+{
+  "data": {
+    "signup": {
+      "id": 2,
+      "username": "abcd",
+      "password": "abcd"
+    }
+  }
+}
+````
+4. Create Stock's preference for user
+````
+The request With Header:
+{
+  "Authorization": "Basic YWJjOmFiYw=="
+}
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+mutation {
+  createPreference(
+    symbol: "abcde"
+  ) {
+    id,
+    symbol,
+    user {
+      id
+    }
+  }
+}
 
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+The response:
+{
+  "data": {
+    "createPreference": {
+      "id": 7,
+      "symbol": "abcde",
+      "user": {
+        "id": 1
+      }
+    }
+  }
+}
+````
 
 ## License
 
