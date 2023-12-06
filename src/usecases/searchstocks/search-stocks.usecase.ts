@@ -15,7 +15,7 @@ export default class SearchStocksUsecase implements IUseCase<StockModel[]> {
    *
    * @param keyword The given keyword to search stocks
    */
-  invoke(keyword: string): Promise<StockModel[]> {
+  async invoke(keyword: string): Promise<StockModel[]> {
     return this.allioExternalRepository.searchStocks(keyword);
   }
 }

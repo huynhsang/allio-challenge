@@ -1,8 +1,19 @@
-import { Entity, Property, PrimaryKey } from '@mikro-orm/core';
+import {
+  Entity,
+  Property,
+  PrimaryKey,
+  ManyToOne,
+  Unique,
+} from '@mikro-orm/core';
 import { Field, ObjectType } from '@nestjs/graphql';
+import UserModel from '../user/user.model';
 
+/**
+ * The model of stock preference
+ */
 @ObjectType()
 @Entity({ tableName: 'stock_preferences' })
+@Unique({ properties: ['symbol', 'user'] })
 export default class StockPreferenceModel {
   @Field()
   @PrimaryKey()
@@ -13,6 +24,6 @@ export default class StockPreferenceModel {
   symbol: string;
 
   @Field()
-  @Property()
-  userId: number;
+  @ManyToOne()
+  user: UserModel;
 }

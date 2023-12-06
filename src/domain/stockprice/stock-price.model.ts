@@ -1,6 +1,9 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 import PriceModel from './price.model';
 
+/**
+ * The model of stock price
+ */
 @ObjectType()
 export default class StockPriceModel {
   @Field()

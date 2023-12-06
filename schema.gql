@@ -1,0 +1,62 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type PriceModel {
+  open: String!
+  high: String!
+  low: String!
+  close: String!
+  adjustedClose: String
+  volume: String
+  price: String
+  dividendAmount: String
+  splitCoefficient: String
+  latestTradingDay: String
+  previousClose: String
+  change: String
+  changePercent: String
+  dateTime: DateTime
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type StockPriceModel {
+  symbol: String!
+  information: String
+  lastRefreshed: DateTime
+  interval: String
+  outputSize: String
+  timezone: String
+  prices: [PriceModel!]!
+}
+
+type UserModel {
+  id: Float!
+  username: String!
+  password: String!
+}
+
+type StockPreferenceModel {
+  id: Float!
+  symbol: String!
+  user: UserModel!
+}
+
+type Query {
+  search(keyword: String!): StockPriceModel!
+  stockPrices(function: String!, symbol: String!, interval: String, outputSize: String, adjusted: Boolean, extended_hours: Boolean, month: String): StockPriceModel!
+}
+
+type Mutation {
+  createPreference(symbol: String!): StockPreferenceModel!
+  signup(user: SignUpDto!): UserModel!
+}
+
+input SignUpDto {
+  username: String!
+  password: String!
+}

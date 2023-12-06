@@ -1,5 +1,8 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 
+/**
+ * The model of stock
+ */
 @ObjectType()
 export default class StockModel {
   @Field()

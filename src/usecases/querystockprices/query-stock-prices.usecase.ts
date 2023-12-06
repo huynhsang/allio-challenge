@@ -34,7 +34,7 @@ export default class QueryStockPricesUsecase
    * @param symbol The stock's symbol
    * @param param The additional parameter to query
    */
-  invoke(
+  async invoke(
     fn: AllioQueryFunction,
     symbol: string,
     param: StockPriceQueryParameter,
