@@ -3,30 +3,20 @@ import { AppController } from './app.controller';
 import { ConfigModule } from '@nestjs/config';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { GraphQLModule } from '@nestjs/graphql';
-// import { MikroOrmModule } from '@mikro-orm/nestjs';
-import Joi from 'joi';
+import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { DatabaseConfiguration } from './configuration/database.configuration';
 import { HttpModule } from '@nestjs/axios';
-import AllioServiceStockPriceRepository from './infrastructure/rest/allio-service-stock-price.repository';
+import AllioExternalRepository from './infrastructure/rest/allio-external.repository';
 import QueryStockPricesUsecase from './usecases/querystockprices/query-stock-prices.usecase';
 import { StockPriceResolver } from './api/graphql/resolvers/stock-price.resolver';
+import StockPreferenceModel from './domain/stockpreference/stock-preference.model';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      validationSchema: Joi.object({
-        POSTGRES_HOST: Joi.string().required(),
-        POSTGRES_PORT: Joi.number().required(),
-        POSTGRES_USER: Joi.string().required(),
-        POSTGRES_PASSWORD: Joi.string().required(),
-        POSTGRES_DB: Joi.string().required(),
-        ALLIO_API_KEY: Joi.string().required(),
-        ALLIO_ENDPOINT: Joi.string().required(),
-      }),
-    }),
+    ConfigModule.forRoot(),
     DatabaseConfiguration,
     HttpModule,
-    // MikroOrmModule.forFeature([]),
+    MikroOrmModule.forFeature([StockPreferenceModel]),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: 'schema.gql',
@@ -34,7 +24,7 @@ import { StockPriceResolver } from './api/graphql/resolvers/stock-price.resolver
   ],
   controllers: [AppController],
   providers: [
-    AllioServiceStockPriceRepository,
+    AllioExternalRepository,
     QueryStockPricesUsecase,
     StockPriceResolver,
   ],

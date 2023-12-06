@@ -1,26 +1,28 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import PriceModel from './price.model';
 
 @ObjectType()
-export default class StockPriceModel {
+export default class StockModel {
   @Field()
   symbol: string;
 
   @Field({ nullable: true })
-  information?: string;
+  name: string;
 
   @Field({ nullable: true })
-  lastRefreshed: Date;
+  type: string;
 
   @Field({ nullable: true })
-  interval: string;
+  region: string;
 
   @Field({ nullable: true })
-  outputSize: string;
+  marketOpen: string;
+
+  @Field({ nullable: true })
+  marketClose: string;
 
   @Field({ nullable: true })
   timezone: string;
 
-  @Field(type => [PriceModel])
-  prices: PriceModel[];
+  @Field({ nullable: true })
+  currency: string;
 }
