@@ -37,20 +37,19 @@ I applies The Clean Architecture (https://blog.cleancoder.com/uncle-bob/2012/08/
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
 ## Installation
+- Ensure Docker and Docker Compose are installed on your system.
+- Update the POSTGRES_HOST variable in your .env file.
+  - If running locally without Docker: `POSTGRES_HOST=localhost`.
+  - If running in a Dockerized environment: Use the appropriate host value based on your Docker setup.
 
 ```bash
-$ npm install
-```
+$ docker-compose up
 
-## Running the app
+or
 
-```bash
-# development
 $ npm run start
-
-# watch mode
-$ npm run start:dev
 ```
+
 
 ## Functionalities
 
