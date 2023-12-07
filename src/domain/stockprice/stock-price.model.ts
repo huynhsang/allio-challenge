@@ -24,6 +24,6 @@ export default class StockPriceModel {
   @Field({ nullable: true })
   timezone: string;
 
-  @Field(type => [PriceModel], { nullable: true })
+  @Field((type) => [PriceModel], { nullable: true })
   prices: PriceModel[];
 }

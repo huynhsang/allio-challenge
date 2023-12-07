@@ -9,9 +9,11 @@ function convertStringToCamelCase(inputString: string): string {
   const words = inputString.split(' ');
 
   // Capitalize the first letter of each word and join them
-  return words
-    .map((word: string) => word.charAt(0).toLowerCase() + word.slice(1))
+  const result = words
+    .map((word: string) => word.charAt(0).toUpperCase() + word.slice(1))
     .join('');
+
+  return (result && result.charAt(0).toLowerCase() + result.slice(1)) || result;
 }
 
 export { convertStringToCamelCase };

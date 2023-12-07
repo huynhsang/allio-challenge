@@ -1,4 +1,3 @@
-// import PostEntity from './models/post.entity';
 import { Options } from '@mikro-orm/core';
 import { ConfigService } from '@nestjs/config';
 import StockPreferenceModel from './domain/stockpreference/stock-preference.model';
